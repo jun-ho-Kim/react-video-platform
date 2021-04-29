@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import { Typography, Button, Form, message, Input, Icon } from 'antd';
 import Dropzone from 'react-dropzone'
 import axios from 'axios'
+import { useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom'
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -21,13 +23,16 @@ const Category = [
 
 
 function UploadVideoPage() {
+    const user = useSelector(state => state.user);
+    const history = useHistory();
+
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [privacy, setPrivacy] = useState("");
     const [categories, setCategories] = useState("");
     const [filePath, setFilePath] = useState("");
-    const [duration, setDuration = useState("";)
-    const [thumbnailPath, setThumbnailPath] = useState("")
+    const [duration, setDuration] = useState("");
+    const [thumbnailPath, setThumbnailPath] = useState("");
     const handleChangeTitle = (event) => {
         setTitle(event.target.value);
     };
@@ -43,9 +48,39 @@ function UploadVideoPage() {
     const handleChangeCategories = (event) => {
         setCategories(event.currentTarget.value)
     };
-    const onSubmit = () => {
+    const onSubmit = (event) => {
+        event.preventDefault();
 
+        if(user.userData && !user.userData.isAuth) {
+            return alert('Please Log in First')
+        }
+
+    if(title === " "|| description === "" || 
+    categories === "" || filePath ==="") {
+        return alert("Please first all the field")
     }
+
+        let variable = {
+            writer: user.userData._id,
+            title,
+            description,
+            privacy,
+            filePath,
+            categories,
+            duration,
+            thumbnail: thumbnailPath,
+        }
+
+        axios.post('/api/video/uploadVideo', variable)
+            .then(response => {
+                if(response.data.success) {
+                    alert('Video upload Successfully');
+                    history.push('/');
+                } else {
+                    alert('Failed to upload video')
+                }
+            })
+    };
     const onDrop = (files) => {
         let formData = new FormData;
         const config = {
@@ -135,7 +170,7 @@ function UploadVideoPage() {
             </select>
             <br />
             <br />            
-            <Button type="primary" size="large" onClick>
+            <Button type="primary" size="large" onClick={onSubmit}>
                 Sumbit
             </Button>
             </Form>
