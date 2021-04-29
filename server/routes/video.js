@@ -27,6 +27,16 @@ let upload = multer({storage: storage}).single("file")
 //=================================
 //             Videos
 //=================================
+router.get('/getVideos', (req, res) => {
+    Video.find()
+        .populate('writer')
+        .exec((err, videos) => {
+            if(err) return {success: false, err}
+            return res.status(200).json({success: true, videos})
+        })
+});
+
+
 
 router.post("/uploadfiles", (req, res) => {
     // console.log("res", res)
@@ -47,7 +57,7 @@ router.post("/thumbnail", (req, res) => {
     ffmpeg.ffprobe(req.body.filePath, function(err, metaData) {
         if(err) console.log("ffprobe Error", err)
         // console.log("Video Data dir", metaData);
-
+        fileDuration = metadata.format.duration;
     });
 
     ffmpeg(req.body.filePath)
@@ -75,7 +85,10 @@ router.post('/uploadVideo', (req, res) => {
             success: true
         })
     })
-})
+});
+
+
+
 
 
 module.exports = router;
