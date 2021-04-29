@@ -25,7 +25,9 @@ function UploadVideoPage() {
     const [description, setDescription] = useState("");
     const [privacy, setPrivacy] = useState("");
     const [categories, setCategories] = useState("");
-    const [filePath, setFilePath] = useState("")
+    const [filePath, setFilePath] = useState("");
+    const [duration, setDuration = useState("";)
+    const [thumbnailPath, setThumbnailPath] = useState("")
     const handleChangeTitle = (event) => {
         setTitle(event.target.value);
     };
@@ -54,13 +56,23 @@ function UploadVideoPage() {
         axios.post('/api/video/uploadfiles', formData, config)
             .then(response => {
                 if(response.data.success) {
-                    console.log("response:", response);
+                    console.log("response:", response.data);
                     let variable = {
                         filePath: response.data.filePath,
                         fileName: response.data.fileName,
                     }
                     console.log("variable:", variable);
-                    setFilePath(response.data.filePath)
+                    setFilePath(response.data.filePath);
+
+                    axios.post('/api/video/thumbnail', variable)
+                        .then(response => {
+                            if(response.data.success) {
+                                setDuration(response.data.fileDuration)
+                                setThumbnailPath(response.data.thumbsFilePath);
+                            } else {
+                                alert('Failed to make the thumbnails');
+                            }
+                        })
                 } else {
                     alert('비디오 업로드를 실패하였습니다.');
                 }
@@ -78,7 +90,7 @@ function UploadVideoPage() {
                     <Dropzone 
                     onDrop={onDrop}
                     multiple={false}
-                    maxSize={800000000}
+                    maxSize={800000000000}
                     >
                      {({ getRootProps, getInputProps }) => (
                         <div style={{ width: '300px', height: '240px', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
@@ -89,7 +101,11 @@ function UploadVideoPage() {
                     )}
                     </Dropzone>             
                     <div>
-                        <img src alt />
+                        {thumbnailPath !== "" &&
+                            <div>
+                                <img src={`http://localhost:5000/${thumbnailPath}`} alt />
+                            </div>
+                        }
                     </div>
                 </div>
             <br /><br />
