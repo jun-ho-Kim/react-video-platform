@@ -2,7 +2,8 @@ import { Avatar, Col, List } from 'antd';
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
-import SideVideo from './Section.js/SideVideo';
+import SideVideo from './Sections/SideVideo';
+import Subscriber from './Sections/Subscriber';
 
 function VideoDetailPage() {
     const [videoDetail, setVideoDetail] = useState([]);
@@ -22,7 +23,7 @@ function VideoDetailPage() {
             <Col lg={18} xs={24}>
                 <video className='detailPage' style={{width: '100%'}} src={`http://localhost:5000/${videoDetail.filePath}`} controls></video>
                 <List.Item 
-                    action={[]}
+                    actions={[<Subscriber userTo={videoDetail.writer} userFrom={localStorage.getItem('userId')}/>]}
                 >
                     <List.Item.Meta
                         avatar={<Avatar src={videoDetail.writer && videoDetail.writer.image} />}

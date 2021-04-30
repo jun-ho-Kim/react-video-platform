@@ -22,10 +22,10 @@ function SideVideo() {
         return (
             <>
             {video._id === videoId ? "" :
-                <div style={{marginBottom: '1rem', padding: '0 2rem'}}>
+                <div style={{marginBottom: '1rem', padding: '0 2rem'}} key={index}>
                     <Link to={`/video/${video._id}`} style={{display: 'flex'}}>
                         <div style={{ width:'40%', marginRight:'1rem', color:'gray' }}>
-                                <img style={{width: '100%'}} src={`http://localhost:5000/${video.thumbnail}`} alt />
+                                <img style={{width: '100%'}} src={`http://localhost:5000/${video.thumbnail}`} alt="thumbnail" />
                         </div>
                         <div style={{width: '50%'}}>
                             <span style={{fontSize: '1rem', color: 'black'}}>{video.title}</span>
