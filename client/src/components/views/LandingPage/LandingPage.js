@@ -3,6 +3,7 @@ import { FaCode } from "react-icons/fa";
 import { Card, Avatar, Col, Typography, Row } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 const { Title } = Typography;
 const { Meta } = Card;
@@ -12,9 +13,9 @@ function LandingPage() {
     const [loading, setLoading] = useState(true);
     
 
-    useEffect(async () => {
+    useEffect( () => {
         setLoading(true);
-        await axios.get('api/video/getVideos')
+        axios.get('api/video/getVideos')
             .then(response => {
                 if(response.data.success) {
                     setVideos(response.data.videos)
@@ -31,8 +32,10 @@ function LandingPage() {
         var seconds = Math.floor(video.duration - minutes*60);
 
         return (
+            <Link key={index} to={`video/${video._id}`} >
+
                 <Col xs={24} md={8} lg={6}>
-                    <div key={index} style={{position: 'relative'}}>
+                    <div  style={{position: 'relative'}}>
                         <img style={{width: '100%'}} alt="thumbnail" src={`http://localhost:5000/${video.thumbnail}`} />
                         <div className="duration"
                             style={{bottom: 0, right:0, position: 'absolute', margin: '4px',
@@ -51,18 +54,22 @@ function LandingPage() {
                         />
                         <span> views: {video.views}</span> - <span>{moment(video.createAt).format(`MMM D - YY`)}</span>                        
                 </Col>
+            </Link>
                 )
-            })
-            return (
-                
-                <div style={{ width: '85%', margin: '3rem auto' }}>
-                <Title level={2}>Recommended</Title>
-                <Row>
-                    {renderGrid}
-                </Row>
-            </div>
-        
-    )
+            });
+            
+    if(loading) {
+        return <div>...Loading</div>
+    } else {
+        return (
+            <div style={{ width: '85%', margin: '3rem auto' }}>
+            <Title level={2}>Recommended</Title>
+            <Row>
+                {renderGrid}
+            </Row>
+        </div>
+        )
+    }
 }
 
 export default LandingPage

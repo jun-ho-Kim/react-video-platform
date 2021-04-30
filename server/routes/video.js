@@ -36,6 +36,16 @@ router.get('/getVideos', (req, res) => {
         })
 });
 
+router.post('/getVideo', (req, res) => {
+    console.log("/getVideo req.body", req.body.videoId)
+    Video.findOne({"_id": req.body.videoId})
+        .populate('writer')
+        .exec((err, video) => {
+            console.log("video Detali" ,video)
+            if(err) return {success: false, err}
+            return res.status(200).json({success: true, video});
+        })
+})
 
 
 router.post("/uploadfiles", (req, res) => {
