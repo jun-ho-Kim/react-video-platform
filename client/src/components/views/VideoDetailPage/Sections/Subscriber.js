@@ -6,7 +6,7 @@ function Subscriber({userTo, userFrom}) {
     const [subscribed, setSubscribed] = useState(false);
     const onSubscribe = () => {
         if(subscribed) {
-            axios.post('/api/subscribe//unSubscribe', {userTo, userFrom})
+            axios.post('/api/subscribe/unSubscribe', {userTo, userFrom})
                 .then(response => {
                     if(response.data.success) {
                         setSubscribeCount(subscribeCount -1);

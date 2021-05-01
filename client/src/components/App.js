@@ -9,6 +9,7 @@ import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
 import uploadVideoPage from './views/UploadVideoPage/UploadVideoPage';
 import VideoDetailPage from './views/VideoDetailPage/VideoDetailPage';
+import SubscriptionPage from './views/SubscriptionPage/SubscriptionPage';
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -24,6 +25,7 @@ function App() {
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           <Route exact path="/video/upload" component={Auth(uploadVideoPage, true)} />
+          <Route exact path="/subscription" component={Auth(SubscriptionPage, true)} />
           <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, null)} />
         </Switch>
       </div>

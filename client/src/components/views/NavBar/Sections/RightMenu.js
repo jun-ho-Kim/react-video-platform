@@ -28,6 +28,9 @@ function RightMenu(props) {
         <Menu.Item key="app">
           <a href="/register">Signup</a>
         </Menu.Item>
+        <Menu.Item key="Upload">
+          <a href="video//upload">Video Upload</a>
+        </Menu.Item>        
       </Menu>
     )
   } else {
