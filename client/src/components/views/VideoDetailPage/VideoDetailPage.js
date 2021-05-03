@@ -2,12 +2,20 @@ import { Avatar, Col, List } from 'antd';
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
+import Comments from './Sections/Comments';
 import SideVideo from './Sections/SideVideo';
+import SingleComment from './Sections/SingleComment';
 import Subscriber from './Sections/Subscriber';
 
 function VideoDetailPage() {
     const [videoDetail, setVideoDetail] = useState([]);
+    const [commentList, setCommentList] = useState([]);
     const {videoId} = useParams();
+    console.log("comment List:", commentList)
+    const updateComment = (newComment) => {
+        setCommentList(commentList.concat(newComment));
+    }
+
     useEffect(() => {
         axios.post('/api/video/getVideo', {videoId})
             .then(response => {
@@ -15,6 +23,13 @@ function VideoDetailPage() {
                     setVideoDetail(response.data.video)
                 } else {
                     alert('Failed to get Video Info')
+                }
+            });
+        axios.post('/api/comment/getComment', {videoId})
+            .then(response => {
+                if(response.data.success) {
+                    console.log("comments", response.data.comments)
+                    setCommentList(response.data.comments)
                 }
             })
     }, [])
@@ -32,6 +47,7 @@ function VideoDetailPage() {
                     
                     />    
                 </List.Item>
+                <Comments commentList={commentList} refreshFunction={updateComment} />
             </Col>
             <Col lg={6} xs={24}>
                 <SideVideo />

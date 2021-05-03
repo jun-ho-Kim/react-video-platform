@@ -11,7 +11,7 @@ const subscriberSchema = mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
-}, {timestapms: true});
+}, {timestamps: true});
 
 const Subscriber = mongoose.model('Subscriber', subscriberSchema);
 

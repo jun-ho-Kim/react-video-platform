@@ -29,7 +29,7 @@ function RightMenu(props) {
           <a href="/register">Signup</a>
         </Menu.Item>
         <Menu.Item key="Upload">
-          <a href="video//upload">Video Upload</a>
+          <a href="video/upload">Video Upload</a>
         </Menu.Item>        
       </Menu>
     )
