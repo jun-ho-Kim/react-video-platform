@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Button } from 'antd';
 import SingleComment from './SingleComment';
+import ReplyComments from './ReplyComments';
 
 function Comments(props) {
     const user = useSelector(state => state.user);
@@ -30,9 +31,8 @@ function Comments(props) {
             .then(response => {
                 if(response.data.success) {
                     setComment("")
-                    props.refreshfunction(response.data.result);
+                    props.refreshFunction(response.data.result);
                 }
-
             })
     }
     return (
@@ -46,11 +46,11 @@ function Comments(props) {
                 />
                 <Button style={{ width: '20%', height: '52px' }} onClick={handleSubmit}>Sumbit</Button>
             </form>
-            {console.log(props.commentList)}
             {props.commentList && props.commentList.map((comment, index) => (
             (!comment.responseTo &&
                 <>
                 <SingleComment comment={comment} refreshFunction={props.refreshFunction} />
+                <ReplyComments commentList={props.commentList} parentCommentId={comment._id} refreshFunction={props.refreshFunction} />
                 </>
             )
             ))}

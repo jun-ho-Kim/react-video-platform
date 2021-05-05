@@ -32,7 +32,7 @@ function VideoDetailPage() {
                     setCommentList(response.data.comments)
                 }
             })
-    }, [])
+    }, [videoId])
     return (
         <div style={{width: '100%', padding: '3rem 4em'}}>
             <Col lg={18} xs={24}>

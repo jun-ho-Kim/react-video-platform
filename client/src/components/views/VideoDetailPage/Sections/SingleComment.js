@@ -3,12 +3,14 @@ import TextArea from 'antd/lib/input/TextArea';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 function SingleComment(props) {
+    console.log("Single comment props", props)
+    const {videoId} = useParams();
     const user = useSelector(state => state.user)
     const [ commentValue, setCommentValue ] = useState("")
     const [ openReply, setOpenReply ] = useState(false);
-    console.log("props.comment._id", props.comment._id)
     const handleReplyClick = () => {
         setOpenReply(!openReply)
     };
@@ -23,7 +25,7 @@ function SingleComment(props) {
         const variable = {
             content: commentValue,
             writer: user.userData._id,
-            postId: props.videoId,
+            postId: videoId,
             responseTo: props.comment._id,
         };
 
