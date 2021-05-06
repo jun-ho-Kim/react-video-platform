@@ -33,10 +33,6 @@ function ReplyComments(props) {
             </>
         ))
         
-
-    
-
-
     return (
         <div>
             {childCommentNumber >0 && 

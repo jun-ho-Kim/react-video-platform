@@ -3,15 +3,14 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
 import Comments from './Sections/Comments';
+import LikeDislike from './Sections/LikeDislike';
 import SideVideo from './Sections/SideVideo';
-import SingleComment from './Sections/SingleComment';
 import Subscriber from './Sections/Subscriber';
 
 function VideoDetailPage() {
     const [videoDetail, setVideoDetail] = useState([]);
     const [commentList, setCommentList] = useState([]);
     const {videoId} = useParams();
-    console.log("comment List:", commentList)
     const updateComment = (newComment) => {
         setCommentList(commentList.concat(newComment));
     }
@@ -28,7 +27,6 @@ function VideoDetailPage() {
         axios.post('/api/comment/getComment', {videoId})
             .then(response => {
                 if(response.data.success) {
-                    console.log("comments", response.data.comments)
                     setCommentList(response.data.comments)
                 }
             })
@@ -38,21 +36,20 @@ function VideoDetailPage() {
             <Col lg={18} xs={24}>
                 <video className='detailPage' style={{width: '100%'}} src={`http://localhost:5000/${videoDetail.filePath}`} controls></video>
                 <List.Item 
-                    actions={[<Subscriber userTo={videoDetail.writer} userFrom={localStorage.getItem('userId')}/>]}
+                    actions={[<LikeDislike video videoId={videoId} userId={localStorage.getItem('userId')} />, <Subscriber userTo={videoDetail.writer} userFrom={localStorage.getItem('userId')}/>]}
                 >
                     <List.Item.Meta
                         avatar={<Avatar src={videoDetail.writer && videoDetail.writer.image} />}
                         title={<a href="">{videoDetail.title}</a>}
                         description={videoDetail.description}
                     
-                    />    
+                    />
                 </List.Item>
                 <Comments commentList={commentList} refreshFunction={updateComment} />
             </Col>
             <Col lg={6} xs={24}>
                 <SideVideo />
             </Col>     
-        
         </div>
     )
 }

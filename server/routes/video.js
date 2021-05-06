@@ -41,7 +41,6 @@ router.post('/getVideo', (req, res) => {
     Video.findOne({"_id": req.body.videoId})
         .populate('writer')
         .exec((err, video) => {
-            console.log("video Detali" ,video)
             if(err) return {success: false, err}
             return res.status(200).json({success: true, video});
         })
